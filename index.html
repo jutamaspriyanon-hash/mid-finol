@@ -1,0 +1,2976 @@
+```html
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pastel Interactive Business Dashboard 🌸✨</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <style>
+
+        /* =========================================================
+           COLOR SYSTEM
+        ========================================================= */
+
+        :root {
+
+            --pink-light: #fdf2f8;
+            --pink: #fbcfe8;
+            --pink-dark: #f43f5e;
+
+            --blue-light: #f0f9ff;
+            --blue: #bae6fd;
+            --blue-dark: #0284c7;
+
+            --mint-light: #f0fdf4;
+            --mint: #bbf7d0;
+            --mint-dark: #16a34a;
+
+            --purple-light: #faf5ff;
+            --purple: #e9d5ff;
+            --purple-dark: #9333ea;
+
+            --yellow-light: #fefce8;
+            --yellow: #fef08a;
+            --yellow-dark: #ca8a04;
+
+            --orange-light: #fff7ed;
+            --orange: #fed7aa;
+            --orange-dark: #ea580c;
+
+            --bg: #fafaf9;
+
+            --text: #334155;
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+        }
+
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Mali', 'Prompt', sans-serif;
+        }
+
+        body {
+
+            background: var(--bg);
+
+            background-image:
+                radial-gradient(
+                    #bae6fd 1.2px,
+                    transparent 1.2px
+                );
+
+            background-size: 24px 24px;
+
+            color: var(--text);
+
+            line-height: 1.6;
+
+            padding: 30px 20px 60px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+            padding: 25px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fbcfe8 0%,
+                    #e9d5ff 50%,
+                    #bae6fd 100%
+                );
+
+            border-radius: 28px;
+
+            border: 3px solid white;
+
+            box-shadow:
+                0 10px 25px
+                rgba(233,213,255,.5);
+        }
+
+        header h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+
+        /* =========================================================
+           SECTION
+        ========================================================= */
+
+        .section-card {
+
+            background: white;
+
+            border-radius: 28px;
+
+            padding: 30px;
+
+            margin-bottom: 35px;
+
+            border: 3px solid white;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,.03);
+        }
+
+        .section-title {
+
+            font-size: 1.4rem;
+
+            color: #475569;
+
+            border-bottom:
+                3px dashed var(--pink);
+
+            padding-bottom: 10px;
+
+            margin-bottom: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .grid-2 {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .info-box {
+
+            background: #fafaf9;
+
+            padding: 20px;
+
+            border-radius: 20px;
+
+            border: 2px solid var(--blue);
+        }
+
+        .info-box h3 {
+            margin-bottom: 8px;
+        }
+
+        .pro-list li,
+        .con-list li {
+
+            list-style: none;
+
+            position: relative;
+
+            padding-left: 26px;
+
+            margin-bottom: 8px;
+
+            font-size: .92rem;
+        }
+
+        .pro-list li::before {
+
+            content: "🌸";
+
+            position: absolute;
+
+            left: 0;
+        }
+
+        .con-list li::before {
+
+            content: "💧";
+
+            position: absolute;
+
+            left: 0;
+        }
+
+
+        /* =========================================================
+           DATASET
+        ========================================================= */
+
+        .dataset-wrapper {
+
+            padding: 22px;
+
+            border-radius: 24px;
+
+            margin-bottom: 30px;
+        }
+
+        .ds-1 {
+
+            background:
+                linear-gradient(
+                    180deg,
+                    var(--pink-light),
+                    white
+                );
+
+            border: 3px solid var(--pink);
+        }
+
+        .ds-2 {
+
+            background:
+                linear-gradient(
+                    180deg,
+                    var(--blue-light),
+                    white
+                );
+
+            border: 3px solid var(--blue);
+        }
+
+        .dataset-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .dataset-tag {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 7px 16px;
+
+            border-radius: 50px;
+
+            font-weight: 700;
+        }
+
+        .tag-ds1 {
+
+            background: #fce7f3;
+
+            color: #be185d;
+        }
+
+        .tag-ds2 {
+
+            background: #e0f2fe;
+
+            color: #0369a1;
+        }
+
+
+        /* =========================================================
+           FILTER
+        ========================================================= */
+
+        .controls {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            background: white;
+
+            padding: 9px 14px;
+
+            border-radius: 16px;
+
+            border: 2px dashed var(--purple);
+
+            box-shadow:
+                0 3px 10px
+                rgba(0,0,0,.025);
+        }
+
+        .filter-group {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-size: .9rem;
+        }
+
+        select {
+
+            padding: 7px 12px;
+
+            border-radius: 12px;
+
+            border: 2px solid var(--purple);
+
+            background: white;
+
+            color: var(--text);
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            outline: none;
+        }
+
+        select:focus {
+
+            border-color:
+                var(--purple-dark);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(147,51,234,.1);
+        }
+
+        .reset-btn {
+
+            border: none;
+
+            padding: 7px 14px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            color: #475569;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--pink),
+                    var(--purple)
+                );
+
+            transition: .2s;
+        }
+
+        .reset-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 12px
+                rgba(147,51,234,.15);
+        }
+
+
+        /* =========================================================
+           KPI
+        ========================================================= */
+
+        .kpi-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(220px, 1fr)
+                );
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .kpi-card {
+
+            position: relative;
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 18px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+            border:
+                2px solid var(--border);
+
+            box-shadow:
+                0 5px 16px
+                rgba(15,23,42,.06);
+
+            transition:
+                transform .25s,
+                box-shadow .25s;
+
+            overflow: hidden;
+        }
+
+        .kpi-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 10px 24px
+                rgba(15,23,42,.09);
+        }
+
+        .kpi-blue {
+            border-left:
+                6px solid var(--blue-dark);
+        }
+
+        .kpi-purple {
+            border-left:
+                6px solid var(--purple-dark);
+        }
+
+        .kpi-pink {
+            border-left:
+                6px solid var(--pink-dark);
+        }
+
+        .kpi-data {
+            min-width: 0;
+        }
+
+        .kpi-data h4 {
+
+            font-size: .85rem;
+
+            color: var(--muted);
+
+            font-weight: 600;
+
+            margin-bottom: 2px;
+        }
+
+        .kpi-data p {
+
+            font-size: 1.35rem;
+
+            font-weight: 700;
+
+            color: #334155;
+        }
+
+        .kpi-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 1.35rem;
+
+            flex-shrink: 0;
+        }
+
+        .icon-blue {
+
+            background: #e0f2fe;
+
+            color: var(--blue-dark);
+        }
+
+        .icon-purple {
+
+            background: #f3e8ff;
+
+            color: var(--purple-dark);
+        }
+
+        .icon-pink {
+
+            background: #fce7f3;
+
+            color: var(--pink-dark);
+        }
+
+
+        /* =========================================================
+           DATASET 1
+        ========================================================= */
+
+        .ds1-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================================================
+           DATASET 2
+           NEW STRUCTURE
+        ========================================================= */
+
+        .ds2-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 20px;
+        }
+
+        .ds2-filter-row {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            margin-bottom: 20px;
+        }
+
+        .ds2-filter {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: white;
+
+            border:
+                2px dashed var(--blue);
+
+            border-radius: 18px;
+
+            padding: 10px 14px;
+
+            box-shadow:
+                0 5px 16px
+                rgba(15,23,42,.04);
+        }
+
+        .ds2-filter .controls {
+
+            border: none;
+
+            box-shadow: none;
+
+            padding: 0;
+
+            background: transparent;
+        }
+
+
+        /* =========================================================
+           CHART GRID
+        ========================================================= */
+
+        .chart-grid-1 {
+
+            display: flex;
+
+            justify-content: center;
+        }
+
+        .chart-grid-2 {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(340px, 1fr)
+                );
+
+            gap: 20px;
+        }
+
+        .chart-card {
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            border:
+                2px solid #f1f5f9;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,.03);
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            width: 100%;
+        }
+
+        .chart-header {
+
+            width: 100%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 12px;
+
+            gap: 10px;
+        }
+
+        .chart-header h3 {
+
+            font-size: 1.05rem;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .badge {
+
+            font-size: .78rem;
+
+            padding: 3px 10px;
+
+            border-radius: 12px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .axis-label {
+
+            font-size: 12px;
+
+            fill: #64748b;
+
+            font-weight: 600;
+        }
+
+        .bar-label {
+
+            fill: #334155;
+        }
+
+        .slice-label {
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            fill: #334155;
+
+            pointer-events: none;
+        }
+
+        .slice-line {
+
+            opacity: .5;
+
+            stroke-width: 1.5px;
+
+            stroke-dasharray: 2,2;
+        }
+
+
+        /* =========================================================
+           TOOLTIP
+        ========================================================= */
+
+        .tooltip {
+
+            position: absolute;
+
+            padding: 8px 14px;
+
+            background: white;
+
+            color: var(--text);
+
+            border-radius: 12px;
+
+            font-size: .85rem;
+
+            pointer-events: none;
+
+            opacity: 0;
+
+            box-shadow:
+                0 8px 20px
+                rgba(0,0,0,.1);
+
+            border:
+                2px solid var(--purple);
+
+            z-index: 100;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media(max-width: 900px) {
+
+            .chart-grid-2 {
+
+                grid-template-columns: 1fr;
+            }
+
+            .ds2-filter-row {
+
+                justify-content: flex-start;
+            }
+        }
+
+        @media(max-width: 700px) {
+
+            body {
+
+                padding:
+                    15px
+                    10px
+                    40px;
+            }
+
+            .section-card {
+
+                padding: 18px;
+            }
+
+            .dataset-wrapper {
+
+                padding: 15px;
+            }
+
+            .kpi-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+
+                width: 100%;
+
+                flex-wrap: wrap;
+            }
+
+            .filter-group {
+
+                flex-wrap: wrap;
+            }
+
+            .ds1-top {
+
+                align-items: stretch;
+            }
+
+            .ds2-top {
+
+                align-items: stretch;
+            }
+
+            .ds2-filter-row {
+
+                justify-content: stretch;
+            }
+
+            .ds2-filter {
+
+                width: 100%;
+            }
+
+            header h1 {
+
+                font-size: 1.6rem;
+            }
+
+            .chart-card {
+
+                overflow-x: auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header>
+
+        <h1>
+
+            <i
+                class="fa-solid fa-cloud-sun"
+                style="color:#f59e0b;"
+            ></i>
+
+            Pastel Business Dashboard ✨
+
+        </h1>
+
+        <p>
+            รายงานและระบบแสดงผลข้อมูลเชิงวิเคราะห์
+        </p>
+
+    </header>
+
+
+    <!-- =========================================================
+         SECTION 1
+    ========================================================= -->
+
+    <div class="section-card">
+
+        <h2 class="section-title">
+
+            <i
+                class="fa-solid fa-heart"
+                style="color:#f43f5e;"
+            ></i>
+
+            ส่วนที่ 1:
+            ความเข้าใจเชิงแนวคิด
+            (Concept & Theory)
+
+        </h2>
+
+
+        <div style="margin-bottom:25px;">
+
+            <h3
+                style="
+                    color:#475569;
+                    margin-bottom:12px;
+                "
+            >
+                1. ประโยชน์ของการใช้เทคโนโลยี
+                การแสดงผลข้อมูล (Data Visualization)
+            </h3>
+
+
+            <div class="grid-2">
+
+
+                <div class="info-box">
+
+                    <h3>
+
+                        <i
+                            class="fa-solid fa-bolt"
+                            style="color:#f59e0b;"
+                        ></i>
+
+                        1. เร่งกระบวนการตีความข้อมูล
+
+                    </h3>
+
+                    <p>
+                        สมองมนุษย์รับรู้ข้อมูลเชิงภาพ
+                        ได้เร็วกว่าตัวเลข
+                    </p>
+
+                    <small>
+
+                        <b>ตัวอย่าง:</b>
+
+                        มองยอดขายรวมผ่านกราฟภาพเดียว
+                        แทนการอ่านตารางจำนวนมาก
+
+                    </small>
+
+                </div>
+
+
+                <div
+                    class="info-box"
+                    style="border-color:var(--pink);"
+                >
+
+                    <h3>
+
+                        <i
+                            class="fa-solid fa-wand-magic-sparkles"
+                            style="color:#ec4899;"
+                        ></i>
+
+                        2. ตรวจพบแนวโน้ม
+                        และข้อผิดปกติ
+
+                    </h3>
+
+                    <p>
+                        ช่วยค้นหา Trend หรือ Outliers
+                        ที่ซ่อนอยู่ในชุดข้อมูล
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="info-box"
+                    style="border-color:var(--purple);"
+                >
+
+                    <h3>
+
+                        <i
+                            class="fa-solid fa-bullseye"
+                            style="color:#8b5cf6;"
+                        ></i>
+
+                        3. สนับสนุนการตัดสินใจ
+
+                    </h3>
+
+                    <p>
+                        เปลี่ยน Data เป็น
+                        Actionable Insight
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <h3
+                style="
+                    color:#475569;
+                    margin-bottom:12px;
+                "
+            >
+                2. ข้อดีและข้อเสียของการแสดงผลข้อมูล
+            </h3>
+
+
+            <div class="grid-2">
+
+
+                <div
+                    class="info-box"
+                    style="
+                        border-color:var(--mint);
+                        background:var(--mint-light);
+                    "
+                >
+
+                    <h3 style="color:#16a34a;">
+
+                        <i class="fa-solid fa-face-smile"></i>
+
+                        ข้อดี (Pros)
+
+                    </h3>
+
+                    <ul class="pro-list">
+
+                        <li>
+                            <b>สื่อสารเข้าใจง่าย:</b>
+                            ช่วยให้ทีมงานเข้าใจข้อมูลเร็วขึ้น
+                        </li>
+
+                        <li>
+                            <b>ยืดหยุ่นโต้ตอบได้:</b>
+                            สามารถ Filter ข้อมูลได้ทันที
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div
+                    class="info-box"
+                    style="
+                        border-color:var(--pink);
+                        background:var(--pink-light);
+                    "
+                >
+
+                    <h3 style="color:#e11d48;">
+
+                        <i class="fa-solid fa-face-sad-tear"></i>
+
+                        ข้อเสีย (Cons)
+
+                    </h3>
+
+                    <ul class="con-list">
+
+                        <li>
+                            <b>เสี่ยงต่อการบิดเบือน:</b>
+                            หากใช้สเกลไม่เหมาะสม
+                        </li>
+
+                        <li>
+                            <b>อาจสูญเสียรายละเอียด:</b>
+                            การสรุปภาพรวมอาจข้ามรายละเอียด
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         SECTION 2
+    ========================================================= -->
+
+    <div class="section-card">
+
+
+        <h2 class="section-title">
+
+            <i
+                class="fa-solid fa-chart-pie"
+                style="color:#9333ea;"
+            ></i>
+
+            ส่วนที่ 2:
+            แดชบอร์ดวิเคราะห์ข้อมูล
+            (Interactive Dashboard)
+
+        </h2>
+
+
+        <!-- =====================================================
+             DATASET 1
+        ====================================================== -->
+
+        <div class="dataset-wrapper ds-1">
+
+
+            <div class="ds1-top">
+
+                <span
+                    class="dataset-tag tag-ds1"
+                >
+
+                    <i
+                        class="fa-solid fa-folder-open"
+                    ></i>
+
+                    ชุดข้อมูลที่ 1:
+                    Yearly Stock Market Trends
+
+                </span>
+
+
+                <!-- FILTER -->
+
+                <div class="controls">
+
+                    <div class="filter-group">
+
+                        <i
+                            class="fa-solid fa-filter"
+                            style="
+                                color:var(--pink-dark);
+                            "
+                        ></i>
+
+                        <label>
+                            <b>กรองปี:</b>
+                        </label>
+
+                        <select id="yearFilter">
+
+                            <option value="all">
+                                🌟 แสดงทุกปี (2020 - 2023)
+                            </option>
+
+                            <option value="2020">
+                                ปี 2020
+                            </option>
+
+                            <option value="2021">
+                                ปี 2021
+                            </option>
+
+                            <option value="2022">
+                                ปี 2022
+                            </option>
+
+                            <option value="2023">
+                                ปี 2023
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="reset-btn"
+                        onclick="resetYearFilter()"
+                    >
+
+                        <i
+                            class="fa-solid fa-rotate-left"
+                        ></i>
+
+                        รีเซ็ต
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- KPI DATASET 1 -->
+
+            <div class="kpi-grid">
+
+                <div class="kpi-card kpi-pink">
+
+                    <div class="kpi-icon icon-pink">
+
+                        <i
+                            class="fa-solid fa-chart-line"
+                        ></i>
+
+                    </div>
+
+                    <div class="kpi-data">
+
+                        <h4>
+                            มูลค่าหุ้นสูงสุด
+                        </h4>
+
+                        <p>
+                            3,000 USD
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kpi-card kpi-purple">
+
+                    <div class="kpi-icon icon-purple">
+
+                        <i
+                            class="fa-solid fa-chart-simple"
+                        ></i>
+
+                    </div>
+
+                    <div class="kpi-data">
+
+                        <h4>
+                            มูลค่าหุ้นเฉลี่ย
+                        </h4>
+
+                        <p>
+                            2,600 USD
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STOCK CHART -->
+
+            <div class="chart-grid-1">
+
+                <div
+                    class="chart-card"
+                    style="max-width:580px;"
+                >
+
+                    <div class="chart-header">
+
+                        <h3>
+
+                            <i
+                                class="fa-solid fa-chart-column"
+                                style="color:#ec4899;"
+                            ></i>
+
+                            Stock Market Values
+
+                        </h3>
+
+                        <span
+                            class="badge"
+                            style="
+                                background:#fce7f3;
+                                color:#be185d;
+                            "
+                        >
+                            Multi-Pastel Bar
+                        </span>
+
+                    </div>
+
+                    <div id="chart1"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             DATASET 2
+             FULL WIDTH STRUCTURE
+        ====================================================== -->
+         <div class="dataset-wrapper ds-2"> <!-- ================================================= DATASET TITLE + FILTER ================================================== --> <div class="ds1-top"> <!-- DATASET TITLE --> <span class="dataset-tag tag-ds2"> <i class="fa-solid fa-folder-open"></i> ชุดข้อมูลที่ 2: Monthly Revenue Data </span> <!-- FILTER --> <div class="controls"> <div class="filter-group"> <i class="fa-solid fa-filter" style="color:var(--blue-dark);" ></i> <label> <b>กรองเดือน:</b> </label> <select id="monthFilter"> <option value="all"> 🌟 แสดงทั้งหมด (Jan - Jun) </option> <option value="Jan"> มกราคม (Jan) </option> <option value="Feb"> กุมภาพันธ์ (Feb) </option> <option value="Mar"> มีนาคม (Mar) </option> <option value="Apr"> เมษายน (Apr) </option> <option value="May"> พฤษภาคม (May) </option> <option value="Jun"> มิถุนายน (Jun) </option> </select> </div> <button class="reset-btn" onclick="resetMonthFilter()" > <i class="fa-solid fa-rotate-left"></i> รีเซ็ต </button> </div> </div> <!-- ================================================= KPI DATASET 2 ================================================== --> <div class="kpi-grid"> <!-- KPI 1 --> <div class="kpi-card kpi-blue"> <div class="kpi-icon icon-blue"> <i class="fa-solid fa-calendar-day"></i> </div> <div class="kpi-data"> <h4 id="currentRevenueTitle"> รายได้รวม </h4> <p id="currentRevenue"> $37,500 </p> </div> </div> <!-- KPI 2 --> <div class="kpi-card kpi-purple"> <div class="kpi-icon icon-purple"> <i class="fa-solid fa-calculator"></i> </div> <div class="kpi-data"> <h4> รายได้เฉลี่ย/เดือน </h4> <p id="avgRevenue"> $6,250 </p> </div> </div> </div> <!-- ================================================= CHARTS ================================================== --> <div class="chart-grid-2"> <!-- ================= LINE ================= --> <div class="chart-card"> <div class="chart-header"> <h3> <i class="fa-solid fa-chart-area" style="color:#8b5cf6;" ></i> Revenue Trend </h3> <span class="badge" style=" background:#f3e8ff; color:#7c3aed; " > Pastel Line </span> </div> <div id="chart2"></div> </div> <!-- ================= DONUT ================= --> <div class="chart-card"> <div class="chart-header"> <h3> <i class="fa-solid fa-chart-pie" style="color:#9333ea;" ></i> Revenue Share </h3> <span class="badge" style=" background:#f3e8ff; color:#7e22ce; " > Donut Chart </span> </div> <div id="chart3"></div> </div> </div> </div>
+
+            <!-- CHARTS -->
+
+            <div class="chart-grid-2">
+
+
+                <!-- LINE -->
+
+                
+
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     TOOLTIP
+========================================================= -->
+
+<div
+    id="tooltip"
+    class="tooltip"
+></div>
+
+
+<script>
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const dataset1_stock = [
+
+    {
+        year: 2020,
+        stock_value: 2200
+    },
+
+    {
+        year: 2021,
+        stock_value: 2500
+    },
+
+    {
+        year: 2022,
+        stock_value: 2700
+    },
+
+    {
+        year: 2023,
+        stock_value: 3000
+    }
+
+];
+
+
+const dataset2_revenue = [
+
+    {
+        month: "Jan",
+        revenue: 5000
+    },
+
+    {
+        month: "Feb",
+        revenue: 5500
+    },
+
+    {
+        month: "Mar",
+        revenue: 6000
+    },
+
+    {
+        month: "Apr",
+        revenue: 6500
+    },
+
+    {
+        month: "May",
+        revenue: 7000
+    },
+
+    {
+        month: "Jun",
+        revenue: 7500
+    }
+
+];
+
+
+/* =========================================================
+   MONTH COLORS
+========================================================= */
+
+const monthColors = {
+
+    Jan: "#fbcfe8",
+    Feb: "#bae6fd",
+    Mar: "#bbf7d0",
+    Apr: "#e9d5ff",
+    May: "#fef08a",
+    Jun: "#fed7aa"
+
+};
+
+
+const monthDarkColors = {
+
+    Jan: "#f43f5e",
+    Feb: "#0284c7",
+    Mar: "#16a34a",
+    Apr: "#9333ea",
+    May: "#ca8a04",
+    Jun: "#ea580c"
+
+};
+
+
+const tooltip =
+    d3.select("#tooltip");
+
+
+const margin = {
+
+    top: 30,
+    right: 45,
+    bottom: 55,
+    left: 60
+
+};
+
+
+const width =
+    440 -
+    margin.left -
+    margin.right;
+
+
+const height =
+    250 -
+    margin.top -
+    margin.bottom;
+
+
+/* =========================================================
+   CHART 1
+========================================================= */
+
+function renderStockChart(filteredData) {
+
+    d3.select("#chart1")
+        .html("");
+
+    const svg =
+        d3.select("#chart1")
+
+            .append("svg")
+
+            .attr(
+                "width",
+                width +
+                margin.left +
+                margin.right
+            )
+
+            .attr(
+                "height",
+                height +
+                margin.top +
+                margin.bottom
+            )
+
+            .append("g")
+
+            .attr(
+                "transform",
+                `translate(
+                    ${margin.left},
+                    ${margin.top}
+                )`
+            );
+
+
+    const x =
+        d3.scaleBand()
+
+            .domain(
+                filteredData.map(
+                    d => d.year
+                )
+            )
+
+            .range([
+                0,
+                width
+            ])
+
+            .padding(.4);
+
+
+    const y =
+        d3.scaleLinear()
+
+            .domain([
+                0,
+                3500
+            ])
+
+            .range([
+                height,
+                0
+            ]);
+
+
+    svg.append("g")
+
+        .attr(
+            "transform",
+            `translate(0,${height})`
+        )
+
+        .call(
+            d3.axisBottom(x)
+        );
+
+
+    svg.append("g")
+
+        .call(
+            d3.axisLeft(y)
+                .ticks(5)
+        );
+
+
+    svg.append("text")
+
+        .attr(
+            "class",
+            "axis-label"
+        )
+
+        .attr(
+            "x",
+            width / 2
+        )
+
+        .attr(
+            "y",
+            height + 42
+        )
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .text("ปี (Year)");
+
+
+    svg.append("text")
+
+        .attr(
+            "class",
+            "axis-label"
+        )
+
+        .attr(
+            "transform",
+            "rotate(-90)"
+        )
+
+        .attr(
+            "y",
+            -45
+        )
+
+        .attr(
+            "x",
+            -height / 2
+        )
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .text("มูลค่าหุ้น (USD)");
+
+
+    const colors = {
+
+        2020: "#fbcfe8",
+        2021: "#bae6fd",
+        2022: "#bbf7d0",
+        2023: "#e9d5ff"
+
+    };
+
+
+    const darkColors = {
+
+        2020: "#f43f5e",
+        2021: "#0284c7",
+        2022: "#16a34a",
+        2023: "#9333ea"
+
+    };
+
+
+    svg.selectAll(".bar")
+
+        .data(filteredData)
+
+        .enter()
+
+        .append("rect")
+
+        .attr(
+            "class",
+            "bar"
+        )
+
+        .attr(
+            "x",
+            d => x(d.year)
+        )
+
+        .attr(
+            "width",
+            x.bandwidth()
+        )
+
+        .attr(
+            "y",
+            height
+        )
+
+        .attr(
+            "height",
+            0
+        )
+
+        .attr(
+            "rx",
+            10
+        )
+
+        .attr(
+            "fill",
+            d => colors[d.year]
+        )
+
+        .attr(
+            "stroke",
+            d => darkColors[d.year]
+        )
+
+        .attr(
+            "stroke-width",
+            1.5
+        )
+
+        .on(
+            "mouseover",
+            (e,d) => {
+
+                tooltip
+
+                    .style(
+                        "opacity",
+                        1
+                    )
+
+                    .html(
+                        `
+                        📈 <b>ปี ${d.year}</b>
+                        <br>
+                        มูลค่าหุ้น:
+                        ${d.stock_value.toLocaleString()}
+                        USD
+                        `
+                    )
+
+                    .style(
+                        "left",
+                        e.pageX + 12 + "px"
+                    )
+
+                    .style(
+                        "top",
+                        e.pageY - 28 + "px"
+                    );
+
+
+                d3.select(
+                    e.currentTarget
+                )
+
+                    .attr(
+                        "fill",
+                        darkColors[d.year]
+                    );
+
+            }
+        )
+
+        .on(
+            "mouseout",
+            (e,d) => {
+
+                tooltip.style(
+                    "opacity",
+                    0
+                );
+
+                d3.select(
+                    e.currentTarget
+                )
+
+                    .attr(
+                        "fill",
+                        colors[d.year]
+                    );
+
+            }
+        )
+
+        .transition()
+
+        .duration(700)
+
+        .attr(
+            "y",
+            d =>
+                y(d.stock_value)
+        )
+
+        .attr(
+            "height",
+            d =>
+                height -
+                y(d.stock_value)
+        );
+
+
+    svg.selectAll(".bar-label")
+
+        .data(filteredData)
+
+        .enter()
+
+        .append("text")
+
+        .attr(
+            "class",
+            "bar-label"
+        )
+
+        .attr(
+            "x",
+            d =>
+                x(d.year) +
+                x.bandwidth() / 2
+        )
+
+        .attr(
+            "y",
+            d =>
+                y(d.stock_value) - 8
+        )
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .style(
+            "font-size",
+            "11px"
+        )
+
+        .style(
+            "font-weight",
+            "700"
+        )
+
+        .text(
+            d =>
+                d.stock_value.toLocaleString()
+        );
+
+}
+
+
+/* =========================================================
+   CHART 2
+========================================================= */
+
+function renderRevenueLine(selectedMonth) {
+
+    d3.select("#chart2")
+        .html("");
+
+    const svg =
+        d3.select("#chart2")
+
+            .append("svg")
+
+            .attr(
+                "width",
+                width +
+                margin.left +
+                margin.right
+            )
+
+            .attr(
+                "height",
+                height +
+                margin.top +
+                margin.bottom
+            )
+
+            .append("g")
+
+            .attr(
+                "transform",
+                `translate(
+                    ${margin.left},
+                    ${margin.top}
+                )`
+            );
+
+
+    const x =
+        d3.scalePoint()
+
+            .domain(
+                dataset2_revenue.map(
+                    d => d.month
+                )
+            )
+
+            .range([
+                0,
+                width
+            ]);
+
+
+    const y =
+        d3.scaleLinear()
+
+            .domain([
+                0,
+                8500
+            ])
+
+            .range([
+                height,
+                0
+            ]);
+
+
+    svg.append("g")
+
+        .attr(
+            "transform",
+            `translate(0,${height})`
+        )
+
+        .call(
+            d3.axisBottom(x)
+        );
+
+
+    svg.append("g")
+
+        .call(
+            d3.axisLeft(y)
+                .ticks(5)
+        );
+
+
+    svg.append("text")
+
+        .attr(
+            "class",
+            "axis-label"
+        )
+
+        .attr(
+            "x",
+            width / 2
+        )
+
+        .attr(
+            "y",
+            height + 42
+        )
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .text(
+            "เดือน (Month)"
+        );
+
+
+    svg.append("text")
+
+        .attr(
+            "class",
+            "axis-label"
+        )
+
+        .attr(
+            "transform",
+            "rotate(-90)"
+        )
+
+        .attr(
+            "y",
+            -45
+        )
+
+        .attr(
+            "x",
+            -height / 2
+        )
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .text(
+            "รายได้ Revenue ($)"
+        );
+
+
+    const defs =
+        svg.append("defs");
+
+
+    const areaGradient =
+        defs.append("linearGradient")
+
+            .attr(
+                "id",
+                "revenue-area-gradient"
+            )
+
+            .attr(
+                "x1",
+                "0%"
+            )
+
+            .attr(
+                "x2",
+                "100%"
+            )
+
+            .attr(
+                "y1",
+                "0%"
+            )
+
+            .attr(
+                "y2",
+                "0%"
+            );
+
+
+    dataset2_revenue.forEach(
+        (d,i) => {
+
+            areaGradient
+
+                .append("stop")
+
+                .attr(
+                    "offset",
+                    `${
+                        (
+                            i /
+                            (
+                                dataset2_revenue.length - 1
+                            )
+                        ) * 100
+                    }%`
+                )
+
+                .attr(
+                    "stop-color",
+                    monthColors[d.month]
+                )
+
+                .attr(
+                    "stop-opacity",
+                    .45
+                );
+
+        }
+    );
+
+
+    const area =
+        d3.area()
+
+            .x(
+                d =>
+                    x(d.month)
+            )
+
+            .y0(height)
+
+            .y1(
+                d =>
+                    y(d.revenue)
+            )
+
+            .curve(
+                d3.curveMonotoneX
+            );
+
+
+    svg.append("path")
+
+        .datum(
+            dataset2_revenue
+        )
+
+        .attr(
+            "fill",
+            "url(#revenue-area-gradient)"
+        )
+
+        .attr(
+            "d",
+            area
+        );
+
+
+    for (
+        let i = 0;
+        i <
+        dataset2_revenue.length - 1;
+        i++
+    ) {
+
+        const current =
+            dataset2_revenue[i];
+
+        const next =
+            dataset2_revenue[i + 1];
+
+
+        const segmentLine =
+            d3.line()
+
+                .x(
+                    d =>
+                        x(d.month)
+                )
+
+                .y(
+                    d =>
+                        y(d.revenue)
+                )
+
+                .curve(
+                    d3.curveMonotoneX
+                );
+
+
+        svg.append("path")
+
+            .datum([
+                current,
+                next
+            ])
+
+            .attr(
+                "fill",
+                "none"
+            )
+
+            .attr(
+                "stroke",
+                monthDarkColors[
+                    current.month
+                ]
+            )
+
+            .attr(
+                "stroke-width",
+                4
+            )
+
+            .attr(
+                "stroke-linecap",
+                "round"
+            )
+
+            .attr(
+                "stroke-linejoin",
+                "round"
+            )
+
+            .attr(
+                "d",
+                segmentLine
+            );
+    }
+
+
+    if (
+        selectedMonth !== "all"
+    ) {
+
+        const selected =
+            dataset2_revenue.find(
+                d =>
+                    d.month ===
+                    selectedMonth
+            );
+
+
+        if (selected) {
+
+            svg.append("line")
+
+                .attr(
+                    "x1",
+                    x(selected.month)
+                )
+
+                .attr(
+                    "x2",
+                    x(selected.month)
+                )
+
+                .attr(
+                    "y1",
+                    height
+                )
+
+                .attr(
+                    "y2",
+                    y(selected.revenue)
+                )
+
+                .attr(
+                    "stroke",
+                    monthDarkColors[
+                        selected.month
+                    ]
+                )
+
+                .attr(
+                    "stroke-width",
+                    2
+                )
+
+                .attr(
+                    "stroke-dasharray",
+                    "6,5"
+                )
+
+                .attr(
+                    "opacity",
+                    .7
+                );
+        }
+    }
+
+
+    svg.selectAll(".revenue-point")
+
+        .data(
+            dataset2_revenue
+        )
+
+        .enter()
+
+        .append("circle")
+
+        .attr(
+            "class",
+            "revenue-point"
+        )
+
+        .attr(
+            "cx",
+            d =>
+                x(d.month)
+        )
+
+        .attr(
+            "cy",
+            d =>
+                y(d.revenue)
+        )
+
+        .attr(
+            "r",
+            d =>
+                d.month === selectedMonth
+                    ? 9
+                    : 6
+        )
+
+        .attr(
+            "fill",
+            d =>
+                d.month === selectedMonth
+                    ? monthDarkColors[d.month]
+                    : monthColors[d.month]
+        )
+
+        .attr(
+            "stroke",
+            d =>
+                monthDarkColors[d.month]
+        )
+
+        .attr(
+            "stroke-width",
+            2.5
+        )
+
+        .style(
+            "cursor",
+            "pointer"
+        )
+
+        .on(
+            "mouseover",
+            (e,d) => {
+
+                tooltip
+
+                    .style(
+                        "opacity",
+                        1
+                    )
+
+                    .html(
+                        `
+                        💰
+                        <b>${d.month}</b>
+                        <br>
+                        รายได้:
+                        <b>
+                            $${d.revenue.toLocaleString()}
+                        </b>
+                        `
+                    )
+
+                    .style(
+                        "left",
+                        e.pageX + 12 + "px"
+                    )
+
+                    .style(
+                        "top",
+                        e.pageY - 28 + "px"
+                    );
+            }
+        )
+
+        .on(
+            "mouseout",
+            () => {
+
+                tooltip.style(
+                    "opacity",
+                    0
+                );
+            }
+        );
+}
+
+
+/* =========================================================
+   CHART 3
+========================================================= */
+
+function renderRevenueDonut(activeMonth) {
+
+    d3.select("#chart3")
+        .html("");
+
+    const donutWidth =
+        width +
+        margin.left +
+        margin.right;
+
+    const donutHeight =
+        height +
+        margin.top +
+        margin.bottom;
+
+    const radius =
+        Math.min(
+            donutWidth,
+            donutHeight
+        ) / 2 - 35;
+
+
+    const svg =
+        d3.select("#chart3")
+
+            .append("svg")
+
+            .attr(
+                "width",
+                donutWidth
+            )
+
+            .attr(
+                "height",
+                donutHeight
+            )
+
+            .append("g")
+
+            .attr(
+                "transform",
+                `translate(
+                    ${donutWidth / 2},
+                    ${donutHeight / 2}
+                )`
+            );
+
+
+    const color =
+        d3.scaleOrdinal()
+
+            .domain(
+                dataset2_revenue.map(
+                    d => d.month
+                )
+            )
+
+            .range([
+                monthColors.Jan,
+                monthColors.Feb,
+                monthColors.Mar,
+                monthColors.Apr,
+                monthColors.May,
+                monthColors.Jun
+            ]);
+
+
+    const pie =
+        d3.pie()
+
+            .value(
+                d =>
+                    d.revenue
+            )
+
+            .sort(null);
+
+
+    const arc =
+        d3.arc()
+
+            .innerRadius(
+                radius * .52
+            )
+
+            .outerRadius(
+                radius
+            );
+
+
+    const outerArc =
+        d3.arc()
+
+            .innerRadius(
+                radius * 1.12
+            )
+
+            .outerRadius(
+                radius * 1.12
+            );
+
+
+    const arcs =
+        svg.selectAll(".arc")
+
+            .data(
+                pie(dataset2_revenue)
+            )
+
+            .enter()
+
+            .append("g")
+
+            .attr(
+                "class",
+                "arc"
+            );
+
+
+    arcs.append("path")
+
+        .attr(
+            "fill",
+            d => {
+
+                if (
+                    d.data.month ===
+                    activeMonth
+                ) {
+
+                    return monthDarkColors[
+                        d.data.month
+                    ];
+                }
+
+                return color(
+                    d.data.month
+                );
+            }
+        )
+
+        .attr(
+            "stroke",
+            "white"
+        )
+
+        .attr(
+            "stroke-width",
+            2.5
+        )
+
+        .style(
+            "cursor",
+            "pointer"
+        )
+
+        .on(
+            "click",
+            (e,d) => {
+
+                document
+                    .getElementById(
+                        "monthFilter"
+                    )
+                    .value =
+                    d.data.month;
+
+                updateDataset2View(
+                    d.data.month
+                );
+            }
+        )
+
+        .on(
+            "mouseover",
+            (e,d) => {
+
+                tooltip
+
+                    .style(
+                        "opacity",
+                        1
+                    )
+
+                    .html(
+                        `
+                        🍩
+                        <b>${d.data.month}</b>
+                        <br>
+                        รายได้:
+                        <b>
+                            $${d.data.revenue.toLocaleString()}
+                        </b>
+                        <br>
+                        <small>
+                            คลิกเพื่อกรอง
+                        </small>
+                        `
+                    )
+
+                    .style(
+                        "left",
+                        e.pageX + 12 + "px"
+                    )
+
+                    .style(
+                        "top",
+                        e.pageY - 28 + "px"
+                    );
+            }
+        )
+
+        .on(
+            "mouseout",
+            () => {
+
+                tooltip.style(
+                    "opacity",
+                    0
+                );
+            }
+        )
+
+        .transition()
+
+        .duration(700)
+
+        .attrTween(
+            "d",
+            function(d) {
+
+                const i =
+                    d3.interpolate(
+                        {
+                            startAngle: 0,
+                            endAngle: 0
+                        },
+                        d
+                    );
+
+                return function(t) {
+
+                    return arc(
+                        i(t)
+                    );
+                };
+            }
+        );
+
+
+    arcs.append("text")
+
+        .attr(
+            "class",
+            "slice-label"
+        )
+
+        .attr(
+            "transform",
+            d => {
+
+                const pos =
+                    outerArc.centroid(d);
+
+                const midangle =
+                    d.startAngle +
+                    (
+                        d.endAngle -
+                        d.startAngle
+                    ) / 2;
+
+                pos[0] =
+                    radius *
+                    1.22 *
+                    (
+                        midangle < Math.PI
+                            ? 1
+                            : -1
+                    );
+
+                return `
+                    translate(${pos})
+                `;
+            }
+        )
+
+        .style(
+            "text-anchor",
+            d => {
+
+                const midangle =
+                    d.startAngle +
+                    (
+                        d.endAngle -
+                        d.startAngle
+                    ) / 2;
+
+                return midangle < Math.PI
+                    ? "start"
+                    : "end";
+            }
+        )
+
+        .text(
+            d =>
+                `${d.data.month}: $${(
+                    d.data.revenue / 1000
+                ).toFixed(1)}k`
+        );
+
+
+    arcs.append("polyline")
+
+        .attr(
+            "class",
+            "slice-line"
+        )
+
+        .attr(
+            "stroke",
+            "#94a3b8"
+        )
+
+        .attr(
+            "fill",
+            "none"
+        )
+
+        .attr(
+            "points",
+            d => {
+
+                const posA =
+                    arc.centroid(d);
+
+                const posB =
+                    outerArc.centroid(d);
+
+                const posC =
+                    outerArc.centroid(d);
+
+                const midangle =
+                    d.startAngle +
+                    (
+                        d.endAngle -
+                        d.startAngle
+                    ) / 2;
+
+                posC[0] =
+                    radius *
+                    1.15 *
+                    (
+                        midangle < Math.PI
+                            ? 1
+                            : -1
+                    );
+
+                return [
+                    posA,
+                    posB,
+                    posC
+                ];
+            }
+        );
+
+
+    const currentData =
+        activeMonth === "all"
+
+            ? dataset2_revenue
+
+            : dataset2_revenue.filter(
+                d =>
+                    d.month ===
+                    activeMonth
+            );
+
+
+    const total =
+        d3.sum(
+            currentData,
+            d =>
+                d.revenue
+        );
+
+
+    svg.append("text")
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .attr(
+            "dy",
+            "-.2em"
+        )
+
+        .style(
+            "font-size",
+            "11px"
+        )
+
+        .style(
+            "font-weight",
+            "600"
+        )
+
+        .style(
+            "fill",
+            "#64748b"
+        )
+
+        .text(
+            activeMonth === "all"
+                ? "รายได้รวมทั้งหมด"
+                : `เดือน ${activeMonth}`
+        );
+
+
+    svg.append("text")
+
+        .attr(
+            "text-anchor",
+            "middle"
+        )
+
+        .attr(
+            "dy",
+            "1.1em"
+        )
+
+        .style(
+            "font-size",
+            "14px"
+        )
+
+        .style(
+            "font-weight",
+            "700"
+        )
+
+        .style(
+            "fill",
+            "#9333ea"
+        )
+
+        .text(
+            `$${total.toLocaleString()}`
+        );
+}
+
+
+/* =========================================================
+   DATASET 1 FILTER
+========================================================= */
+
+function updateDataset1View(selectedYear) {
+
+    let filteredData =
+        dataset1_stock;
+
+    if (
+        selectedYear !== "all"
+    ) {
+
+        filteredData =
+            dataset1_stock.filter(
+                d =>
+                    d.year.toString() ===
+                    selectedYear
+            );
+    }
+
+    renderStockChart(
+        filteredData
+    );
+}
+
+
+function resetYearFilter() {
+
+    document
+        .getElementById(
+            "yearFilter"
+        )
+        .value =
+        "all";
+
+    updateDataset1View(
+        "all"
+    );
+}
+
+
+d3.select("#yearFilter")
+
+    .on(
+        "change",
+        function() {
+
+            updateDataset1View(
+                this.value
+            );
+        }
+    );
+
+
+/* =========================================================
+   DATASET 2 FILTER
+========================================================= */
+
+function updateDataset2View(selectedMonth) {
+
+    let filteredData =
+        dataset2_revenue;
+
+    if (
+        selectedMonth !== "all"
+    ) {
+
+        filteredData =
+            dataset2_revenue.filter(
+                d =>
+                    d.month ===
+                    selectedMonth
+            );
+    }
+
+
+    renderRevenueLine(
+        selectedMonth
+    );
+
+
+    renderRevenueDonut(
+        selectedMonth
+    );
+
+
+    const total =
+        d3.sum(
+            filteredData,
+            d =>
+                d.revenue
+        );
+
+
+    const average =
+        total /
+        filteredData.length;
+
+
+    const title =
+        document.getElementById(
+            "currentRevenueTitle"
+        );
+
+
+    if (
+        selectedMonth === "all"
+    ) {
+
+        title.textContent =
+            "รายได้รวม";
+
+    } else {
+
+        title.textContent =
+            `รายได้เดือน ${selectedMonth}`;
+    }
+
+
+    document
+        .getElementById(
+            "currentRevenue"
+        )
+        .textContent =
+        "$" +
+        total.toLocaleString();
+
+
+    document
+        .getElementById(
+            "avgRevenue"
+        )
+        .textContent =
+        "$" +
+        Math.round(
+            average
+        ).toLocaleString();
+}
+
+
+function resetMonthFilter() {
+
+    document
+        .getElementById(
+            "monthFilter"
+        )
+        .value =
+        "all";
+
+    updateDataset2View(
+        "all"
+    );
+}
+
+
+d3.select("#monthFilter")
+
+    .on(
+        "change",
+        function() {
+
+            updateDataset2View(
+                this.value
+            );
+        }
+    );
+
+
+/* =========================================================
+   INITIAL RENDER
+========================================================= */
+
+updateDataset1View(
+    "all"
+);
+
+updateDataset2View(
+    "all"
+);
+
+</script>
+
+</body>
+</html>
+```
